@@ -71,6 +71,8 @@
   var inicial = {};
   new URLSearchParams(location.search).forEach(function (v, k) { inicial[k] = v; });
   inicial = limpar(inicial);
+  /* A entrada do planejador (PIN) e a liberação abrem só pelo endereço do planejador. */
+  delete inicial.ent; delete inicial.k; delete inicial.lib;
   inicial.embed = "1";
   document.getElementById("app").src = APP + busca(inicial);
 
@@ -81,7 +83,7 @@
     var d = e.data;
     if (!d || d.realize !== "rota" || typeof d.par !== "object") return;
     var par = limpar(d.par);
-    delete par.embed; delete par.sair;
+    delete par.embed; delete par.sair; delete par.ent; delete par.k; delete par.lib;
     try { history.replaceState(null, "", location.pathname + busca(par)); } catch (err) {}
     if (d.titulo && typeof d.titulo === "string") document.title = d.titulo.slice(0, 120);
   });
